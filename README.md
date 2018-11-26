@@ -3,6 +3,10 @@
 
 This repository contains an easy to replicate recipe to spin up a [Kopano](https://kopano.com/) demo environment, which can (through modification of `.env` and possibly `docker-compose.yml`) also be used for production environments.
 
+Want to give Kopano a quick try? Click below to spin up a demo environment on [Play with Docker](play-with-docker.com):
+
+[![Deploy to Play with Docker](https://github.com/play-with-docker/stacks/raw/cff22438cb4195ace27f9b15784bbb497047afa7/assets/images/button.png)](http://play-with-docker.com/?stack=)
+
 ## How to get started?
 
 - make sure that you are running a recent enought version of Docker and [Docker Compose](https://docs.docker.com/compose/install/)
