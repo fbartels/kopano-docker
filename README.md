@@ -5,7 +5,7 @@ This repository contains an easy to replicate recipe to spin up a [Kopano](https
 
 Want to give Kopano a quick try? Click below to spin up a demo environment on [Play with Docker](play-with-docker.com):
 
-[![Deploy to Play with Docker](https://github.com/play-with-docker/stacks/raw/cff22438cb4195ace27f9b15784bbb497047afa7/assets/images/button.png)](http://play-with-docker.com/?stack=)
+[![Deploy to Play with Docker](https://github.com/play-with-docker/stacks/raw/cff22438cb4195ace27f9b15784bbb497047afa7/assets/images/button.png)](http://play-with-docker.com/?stack=https://raw.githubusercontent.com/fbartels/kopano-docker/play-with-docker/play-with-docker.yml)
 
 ## How to get started?
 
