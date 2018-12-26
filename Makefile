@@ -2,14 +2,9 @@ docker_repo := zokradonh
 docker_login := `cat ~/.docker-account-user`
 docker_pwd := `cat ~/.docker-account-pwd`
 
-base_version = $(shell docker run --rm $(docker_repo)/kopano_base cat /kopano/buildversion)
 base_download_version := $(shell ./version.sh core)
-core_version = $(shell docker run --rm $(docker_repo)/kopano_core cat /kopano/buildversion | cut -d- -f2)
-utils_version = $(shell docker run --rm $(docker_repo)/kopano_utils cat /kopano/buildversion | cut -d- -f2)
 core_download_version := $(shell ./version.sh core)
-webapp_version = $(shell docker run --rm $(docker_repo)/kopano_webapp cat /kopano/buildversion | grep webapp | cut -d- -f2 | cut -d+ -f1)
 webapp_download_version := $(shell ./version.sh webapp)
-zpush_version = $(shell docker run --rm $(docker_repo)/kopano_zpush cat /kopano/buildversion | tail -n 1 | grep -o -P '(?<=-).*(?=\+)')
 zpush_download_version := $(shell ./version.sh zpush)
 
 KOPANO_CORE_REPOSITORY_URL := file:/kopano/repo/core
@@ -73,6 +68,11 @@ build-ldap-demo:
 
 tag: component ?= base
 tag:
+	(eval base_version = $(shell docker run --rm $(docker_repo)/kopano_base cat /kopano/buildversion))
+	(eval core_version = $(shell docker run --rm $(docker_repo)/kopano_core cat /kopano/buildversion | cut -d- -f2))
+	(eval utils_version = $(shell docker run --rm $(docker_repo)/kopano_utils cat /kopano/buildversion | cut -d- -f2))
+	(eval webapp_version = $(shell docker run --rm $(docker_repo)/kopano_webapp cat /kopano/buildversion | grep webapp | cut -d- -f2 | cut -d+ -f1))
+	(eval zpush_version = $(shell docker run --rm $(docker_repo)/kopano_zpush cat /kopano/buildversion | tail -n 1 | grep -o -P '(?<=-).*(?=\+)'))
 	@echo 'create tag $($(component)_version)'
 	docker tag $(docker_repo)/kopano_$(component) $(docker_repo)/kopano_$(component):${$(component)_version}
 	@echo 'create tag latest'
