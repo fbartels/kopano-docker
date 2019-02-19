@@ -181,4 +181,9 @@ test-quick:
 test-stop:
 	docker-compose -f $(COMPOSE_FILE) stop || true
 
+play-with-docker:
+	mv .env .env-bak
+	expect test.exp
+	docker-compose -f $(COMPOSE_FILE) config > play-with-docker.yml
+
 default: build-all
