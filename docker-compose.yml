@@ -240,6 +240,10 @@ services:
       - kopanodata/:/kopano/data
       - kopanossl/:/kopano/ssl
       - kopanosocket/:/run/kopano
+    secrets:
+      - source: apt-auth
+        target: /etc/apt/auth.conf
+        mode: 0400
 
   kopano_webapp:
     image: ${docker_repo:-zokradonh}/kopano_webapp:${WEBAPP_VERSION:-latest}
@@ -490,3 +494,7 @@ networks:
   ldap-net:
     name: ldap-net
     driver: bridge
+
+secrets:
+  apt-auth:
+    file: ./auth.conf

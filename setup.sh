@@ -331,12 +331,12 @@ docker_repo=zokradonh
 COMPOSE_PROJECT_NAME=kopano
 
 # Modify below to build a different version, than the kopano nightly release
-#KOPANO_CORE_REPOSITORY_URL=https://serial:REPLACE-ME@download.kopano.io/supported/core:/final/Debian_9.0/
-#KOPANO_MEET_REPOSITORY_URL=https://serial:REPLACE-ME@download.kopano.io/supported/meet:/final/Debian_9.0/
-#KOPANO_WEBAPP_REPOSITORY_URL=https://serial:REPLACE-ME@download.kopano.io/supported/webapp:/final/Debian_9.0/
-#KOPANO_WEBAPP_FILES_REPOSITORY_URL=https://serial:REPLACE-ME@download.kopano.io/supported/files:/final/Debian_9.0/
-#KOPANO_WEBAPP_MDM_REPOSITORY_URL=https://serial:REPLACE-ME@download.kopano.io/supported/mdm:/final/Debian_9.0/
-#KOPANO_WEBAPP_SMIME_REPOSITORY_URL=https://serial:REPLACE-ME@download.kopano.io/supported/smime:/final/Debian_9.0/
+#KOPANO_CORE_REPOSITORY_URL=https://download.kopano.io/supported/core:/final/Debian_9.0/
+#KOPANO_MEET_REPOSITORY_URL=https://download.kopano.io/supported/meet:/final/Debian_9.0/
+#KOPANO_WEBAPP_REPOSITORY_URL=https://download.kopano.io/supported/webapp:/final/Debian_9.0/
+#KOPANO_WEBAPP_FILES_REPOSITORY_URL=https://download.kopano.io/supported/files:/final/Debian_9.0/
+#KOPANO_WEBAPP_MDM_REPOSITORY_URL=https://download.kopano.io/supported/mdm:/final/Debian_9.0/
+#KOPANO_WEBAPP_SMIME_REPOSITORY_URL=https://download.kopano.io/supported/smime:/final/Debian_9.0/
 #KOPANO_ZPUSH_REPOSITORY_URL=http://repo.z-hub.io/z-push:/final/Debian_9.0/
 #RELEASE_KEY_DOWNLOAD=1
 #DOWNLOAD_COMMUNITY_PACKAGES=0
