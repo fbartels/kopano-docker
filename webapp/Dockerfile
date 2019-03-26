@@ -44,21 +44,21 @@ RUN \
     if [ ${DOWNLOAD_COMMUNITY_PACKAGES} -eq 1 ]; then \
         dl_and_package_community "core"; \
         dl_and_package_community "webapp"; \
-        dl_and_package_community "files"; \
-        dl_and_package_community "mdm"; \
-        dl_and_package_community "smime"; \
+        #dl_and_package_community "files"; \
+        #dl_and_package_community "mdm"; \
+        #dl_and_package_community "smime"; \
     fi; \
     echo "deb [${KOPANO_REPOSITORY_FLAGS}] ${KOPANO_CORE_REPOSITORY_URL} ./" > /etc/apt/sources.list.d/kopano.list; \
     echo "deb [${KOPANO_REPOSITORY_FLAGS}] ${KOPANO_WEBAPP_REPOSITORY_URL} ./" >> /etc/apt/sources.list.d/kopano.list; \
-    echo "deb [${KOPANO_REPOSITORY_FLAGS}] ${KOPANO_WEBAPP_SMIME_REPOSITORY_URL} ./" >> /etc/apt/sources.list.d/kopano.list; \
-    echo "deb [${KOPANO_REPOSITORY_FLAGS}] ${KOPANO_WEBAPP_MDM_REPOSITORY_URL} ./" >> /etc/apt/sources.list.d/kopano.list; \
-    echo "deb [${KOPANO_REPOSITORY_FLAGS}] ${KOPANO_WEBAPP_FILES_REPOSITORY_URL} ./" >> /etc/apt/sources.list.d/kopano.list; \
+    #echo "deb [${KOPANO_REPOSITORY_FLAGS}] ${KOPANO_WEBAPP_SMIME_REPOSITORY_URL} ./" >> /etc/apt/sources.list.d/kopano.list; \
+    #echo "deb [${KOPANO_REPOSITORY_FLAGS}] ${KOPANO_WEBAPP_MDM_REPOSITORY_URL} ./" >> /etc/apt/sources.list.d/kopano.list; \
+    #echo "deb [${KOPANO_REPOSITORY_FLAGS}] ${KOPANO_WEBAPP_FILES_REPOSITORY_URL} ./" >> /etc/apt/sources.list.d/kopano.list; \
     # save kopano version
     echo "core-${KOPANO_CORE_VERSION}" > /kopano/buildversion; \
     echo "webapp-${KOPANO_WEBAPP_VERSION}" >> /kopano/buildversion; \
-    echo "files-${KOPANO_WEBAPP_FILES_VERSION}" >> /kopano/buildversion; \
-    echo "mdm-${KOPANO_WEBAPP_MDM_VERSION}" >> /kopano/buildversion; \
-    echo "smime-${KOPANO_WEBAPP_SMIME_VERSION}" >> /kopano/buildversion; \
+    #echo "files-${KOPANO_WEBAPP_FILES_VERSION}" >> /kopano/buildversion; \
+    #echo "mdm-${KOPANO_WEBAPP_MDM_VERSION}" >> /kopano/buildversion; \
+    #echo "smime-${KOPANO_WEBAPP_SMIME_VERSION}" >> /kopano/buildversion; \
     # install apt keys if supported kopano
     if [ ${RELEASE_KEY_DOWNLOAD} -eq 1 ]; then \
         curl -s -S -o - "${KOPANO_CORE_REPOSITORY_URL}/Release.key" | apt-key add -; \
@@ -82,10 +82,13 @@ RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     update-locale LANG=en_US.UTF-8 && \
     # configure php-fpm
     mkdir -p /run/php && chown www-data:www-data /run/php && \
-    crudini --set /etc/php/7.0/fpm/php.ini PHP upload_max_filesize 500M && \
-    crudini --set /etc/php/7.0/fpm/php.ini PHP post_max_size 500M && \
-    crudini --set /etc/php/7.0/fpm/php.ini PHP max_input_vars 1800 && \
-    crudini --set /etc/php/7.0/fpm/php.ini Session session.save_path /run/sessions
+    crudini --set /etc/php/7.3/fpm/php.ini PHP upload_max_filesize 500M && \
+    crudini --set /etc/php/7.3/fpm/php.ini PHP post_max_size 500M && \
+    crudini --set /etc/php/7.3/fpm/php.ini PHP max_input_vars 1800 && \
+    crudini --set /etc/php/7.3/fpm/php.ini Session session.save_path /run/sessions
+
+# workaround for packaging not (yet) recognising php 7.3
+RUN cp /usr/share/kopano/php/mapi/mapi.ini /etc/php/7.3/fpm/conf.d/20-kopano.ini
 
 EXPOSE 80/tcp
 

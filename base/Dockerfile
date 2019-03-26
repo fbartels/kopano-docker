@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:buster
 
 LABEL maintainer=az@zok.xyz \
       version="2.0"
