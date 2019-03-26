@@ -82,5 +82,5 @@ chown -R www-data:www-data /run/sessions /tmp/webapp
 # cleaning up env variables
 unset "${!KCCONF_@}"
 echo "Starting php-fpm"
-php-fpm7.0 -F &
+php-fpm7.2 -F &
 exec /usr/libexec/kopano/kwebd caddy -conf /etc/kweb.cfg

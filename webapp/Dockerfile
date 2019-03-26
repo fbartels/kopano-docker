@@ -82,10 +82,10 @@ RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     update-locale LANG=en_US.UTF-8 && \
     # configure php-fpm
     mkdir -p /run/php && chown www-data:www-data /run/php && \
-    crudini --set /etc/php/7.0/fpm/php.ini PHP upload_max_filesize 500M && \
-    crudini --set /etc/php/7.0/fpm/php.ini PHP post_max_size 500M && \
-    crudini --set /etc/php/7.0/fpm/php.ini PHP max_input_vars 1800 && \
-    crudini --set /etc/php/7.0/fpm/php.ini Session session.save_path /run/sessions
+    crudini --set /etc/php/7.2/fpm/php.ini PHP upload_max_filesize 500M && \
+    crudini --set /etc/php/7.2/fpm/php.ini PHP post_max_size 500M && \
+    crudini --set /etc/php/7.2/fpm/php.ini PHP max_input_vars 1800 && \
+    crudini --set /etc/php/7.2/fpm/php.ini Session session.save_path /run/sessions
 
 EXPOSE 80/tcp
 

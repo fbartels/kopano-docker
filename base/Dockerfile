@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM ubuntu:18.04
 
 LABEL maintainer=az@zok.xyz \
       version="2.0"
