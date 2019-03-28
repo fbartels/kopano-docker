@@ -5,10 +5,10 @@ ifndef TRAVIS
 	docker_pwd := `cat ~/.docker-account-pwd`
 endif
 
-base_download_version := $(shell ./version.sh core)
-core_download_version := $(shell ./version.sh core)
+base_download_version := $(shell ./version.sh core Debian_Testing)
+core_download_version := $(shell ./version.sh core Debian_Testing)
 meet_download_version := $(shell ./version.sh meet)
-webapp_download_version := $(shell ./version.sh webapp)
+webapp_download_version := $(shell ./version.sh webapp Debian_Testing)
 zpush_download_version := $(shell ./version.sh zpush)
 
 KOPANO_CORE_REPOSITORY_URL := file:/kopano/repo/core

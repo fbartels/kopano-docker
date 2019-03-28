@@ -37,9 +37,9 @@ services:
     environment:
       - TZ=${TZ}
       # hostname of kopano system, leave empty for unix socket
-      - KCCONF_SERVERHOSTNAME=
+      - KCCONF_SERVERHOSTNAME=elmo.host-consultants.de
       # https port of kopano system
-      - KCCONF_SERVERPORT=
+      - KCCONF_SERVERPORT=237
       - ADDITIONAL_KOPANO_WEBAPP_PLUGINS=${ADDITIONAL_KOPANO_WEBAPP_PLUGINS}
     networks:
       - web-net

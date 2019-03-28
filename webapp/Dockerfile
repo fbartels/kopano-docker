@@ -42,8 +42,8 @@ RUN \
     # community download and package as apt source repository
     . /kopano/helper/create-kopano-repo.sh && \
     if [ ${DOWNLOAD_COMMUNITY_PACKAGES} -eq 1 ]; then \
-        dl_and_package_community "core"; \
-        dl_and_package_community "webapp"; \
+        dl_and_package_community "core" "Debian_Testing"; \
+        dl_and_package_community "webapp" "Debian_Testing"; \
         #dl_and_package_community "files"; \
         #dl_and_package_community "mdm"; \
         #dl_and_package_community "smime"; \
