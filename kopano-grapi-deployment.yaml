@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kopano-grapi
+  name: kopano-grapi
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: kopano-grapi
+    spec:
+      containers:
+      - env:
+        - name: KCCONF_GRAPI_ENABLE_EXPERIMENTAL_ENDPOINTS
+          value: "false"
+        - name: SERVICE_TO_START
+          value: grapi
+        - name: TZ
+          value: Europe/Berlin
+        image: kopano/kopano_core:latest
+        name: kopano-grapi
+        resources: {}
+        volumeMounts:
+        - mountPath: /run/kopano
+          name: kopanosocket
+        - mountPath: /var/lib/kopano-grapi
+          name: kopanograpi
+      restartPolicy: Always
+      volumes:
+      - name: kopanosocket
+        persistentVolumeClaim:
+          claimName: kopanosocket
+      - name: kopanograpi
+        persistentVolumeClaim:
+          claimName: kopanograpi
+status: {}

@@ -1,0 +1,58 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: web
+  name: web
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: web
+    spec:
+      containers:
+      - args:
+        - wrapper.sh
+        env:
+        - name: DEFAULTREDIRECT
+          value: /meet
+        - name: EMAIL
+          value: self_signed
+        - name: FQDN
+          value: kopano.demo
+        image: kopano/kopano_web:latest
+        name: web
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        - containerPort: 2015
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - NET_BIND_SERVICE
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /.kweb
+          name: web
+      restartPolicy: Always
+      volumes:
+      - name: web
+        persistentVolumeClaim:
+          claimName: web
+status: {}

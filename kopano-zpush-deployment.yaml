@@ -1,0 +1,54 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kopano-zpush
+  name: kopano-zpush
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: kopano-zpush
+    spec:
+      containers:
+      - env:
+        - name: ADDITIONAL_KOPANO_PACKAGES
+          value: z-push-ipc-memcached z-push-state-sql z-push-kopano-gab2contacts
+        - name: TZ
+          value: Europe/Berlin
+        - name: ZPUSH_ADDITIONAL_FOLDERS
+          value: '[]'
+        image: kopano/kopano_zpush:latest
+        name: kopano-zpush
+        resources: {}
+        volumeMounts:
+        - mountPath: /kopano/ssl
+          name: kopanossl
+        - mountPath: /run/kopano
+          name: kopanosocket
+        - mountPath: /var/lib/z-push
+          name: zpushstates
+      hostname: kopano_zpush
+      restartPolicy: Always
+      volumes:
+      - name: kopanossl
+        persistentVolumeClaim:
+          claimName: kopanossl
+      - name: kopanosocket
+        persistentVolumeClaim:
+          claimName: kopanosocket
+      - name: zpushstates
+        persistentVolumeClaim:
+          claimName: zpushstates
+status: {}

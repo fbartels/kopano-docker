@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kopano-server
+  name: kopano-server
+spec:
+  ports:
+  - name: "236"
+    port: 236
+    targetPort: 236
+  - name: "237"
+    port: 237
+    targetPort: 237
+  selector:
+    io.kompose.service: kopano-server
+status:
+  loadBalancer: {}

@@ -1,0 +1,118 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mail
+  name: mail
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mail
+    spec:
+      containers:
+      - env:
+        - name: DMS_DEBUG
+          value: "0"
+        - name: ENABLE_CLAMAV
+          value: "1"
+        - name: ENABLE_FAIL2BAN
+          value: "1"
+        - name: ENABLE_LDAP
+          value: "1"
+        - name: ENABLE_POSTFIX_VIRTUAL_TRANSPORT
+          value: "1"
+        - name: ENABLE_POSTGREY
+          value: "1"
+        - name: ENABLE_SASLAUTHD
+          value: "1"
+        - name: ENABLE_SPAMASSASSIN
+          value: "1"
+        - name: LDAP_BIND_DN
+          value: cn=readonly,dc=kopano,dc=demo
+        - name: LDAP_BIND_PW
+          value: 228C67CCCA4654D2A6967ADE3F468FCE
+        - name: LDAP_QUERY_FILTER_ALIAS
+          value: (&(kopanoAccount=1)(kopanoAliases=%s))
+        - name: LDAP_QUERY_FILTER_DOMAIN
+          value: (&(|(mail=*@%s)(kopanoAliases=*@%s)))
+        - name: LDAP_QUERY_FILTER_GROUP
+          value: (&(objectclass=kopano-group)(mail=%s))
+        - name: LDAP_QUERY_FILTER_USER
+          value: (&(kopanoAccount=1)(mail=%s))
+        - name: LDAP_SEARCH_BASE
+          value: dc=kopano,dc=demo
+        - name: LDAP_SERVER_HOST
+          value: ldap://ldap:389
+        - name: ONE_DIR
+          value: "1"
+        - name: PERMIT_DOCKER
+          value: connected-networks
+        - name: POSTFIX_DAGENT
+          value: lmtp:kopano_dagent:2003
+        - name: POSTMASTER_ADDRESS
+          value: postmaster@kopano.demo
+        - name: REPORT_RECIPIENT
+          value: "1"
+        - name: SASLAUTHD_LDAP_BIND_DN
+          value: cn=readonly,dc=kopano,dc=demo
+        - name: SASLAUTHD_LDAP_FILTER
+          value: (&(kopanoAccount=1)(uid=%s))
+        - name: SASLAUTHD_LDAP_PASSWORD
+          value: 228C67CCCA4654D2A6967ADE3F468FCE
+        - name: SASLAUTHD_LDAP_SEARCH_BASE
+          value: dc=kopano,dc=demo
+        - name: SASLAUTHD_LDAP_SERVER
+          value: ldap://ldap:389
+        - name: SASLAUTHD_MECHANISMS
+          value: ldap
+        - name: SMTP_ONLY
+          value: "1"
+        - name: SSL_TYPE
+          value: self-signed
+        - name: TZ
+          value: Europe/Berlin
+        image: tvial/docker-mailserver:release-v6.2.0
+        name: kopano-mail
+        ports:
+        - containerPort: 25
+        - containerPort: 465
+        - containerPort: 587
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - SYS_PTRACE
+        volumeMounts:
+        - mountPath: /tmp/docker-mailserver
+          name: mtaconfig
+        - mountPath: /var/mail
+          name: maildata
+        - mountPath: /var/mail-state
+          name: mailstate
+      hostname: mail
+      restartPolicy: Always
+      subdomain: kopano.demo
+      volumes:
+      - name: mtaconfig
+        persistentVolumeClaim:
+          claimName: mtaconfig
+      - name: maildata
+        persistentVolumeClaim:
+          claimName: maildata
+      - name: mailstate
+        persistentVolumeClaim:
+          claimName: mailstate
+status: {}

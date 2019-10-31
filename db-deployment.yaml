@@ -1,0 +1,61 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: db
+  name: db
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: db
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_ADDITIONAL_DATABASES
+          value: kopano2
+        - name: MYSQL_DATABASE
+          value: kopano
+        - name: MYSQL_PASSWORD
+          value: 487971A7914C7A0D4E043A375A020F67
+        - name: MYSQL_ROOT_PASSWORD
+          value: C6A6C21CB905871FB2CE8C1C34AFEAF2
+        - name: MYSQL_USER
+          value: kopano
+        image: mariadb:10.3.10-bionic
+        livenessProbe:
+          exec:
+            command:
+            - mysql --database=$MYSQL_DATABASE --password=$MYSQL_ROOT_PASSWORD --execute="SELECT
+              count(table_name) > 0 FROM information_schema.tables;" --skip-column-names
+              -B
+          failureThreshold: 4
+          periodSeconds: 30
+          timeoutSeconds: 10
+        name: kopano-db
+        resources: {}
+        volumeMounts:
+        - mountPath: /docker-entrypoint-initdb.d/create-additional-databases.sh
+          name: db-claim0
+        - mountPath: /var/lib/mysql
+          name: mysql
+      restartPolicy: Always
+      volumes:
+      - name: db-claim0
+        persistentVolumeClaim:
+          claimName: db-claim0
+      - name: mysql
+        persistentVolumeClaim:
+          claimName: mysql
+status: {}

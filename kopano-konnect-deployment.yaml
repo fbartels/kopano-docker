@@ -1,0 +1,60 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kopano-konnect
+  name: kopano-konnect
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: kopano-konnect
+    spec:
+      containers:
+      - env:
+        - name: FQDN
+          value: kopano.demo:2015
+        - name: allow_client_guests
+          value: "yes"
+        - name: allow_dynamic_client_registration
+          value: "yes"
+        - name: eckey
+          value: /kopano/ssl/meet-kwmserver.pem
+        - name: ecparam
+          value: /kopano/ssl/ecparam.pem
+        - name: encryption_secret_key
+          value: /kopano/ssl/konnectd-encryption.key
+        - name: identifier_registration_conf
+          value: /kopano/ssl/konnectd-identifier-registration.yaml
+        - name: identifier_scopes_conf
+          value: /etc/kopano/konnectd-identifier-scopes.yaml
+        - name: signing_private_key
+          value: /kopano/ssl/konnectd-tokens-signing-key.pem
+        image: kopano/kopano_konnect:latest
+        name: kopano-konnect
+        resources: {}
+        volumeMounts:
+        - mountPath: /kopano/ssl
+          name: kopanossl
+        - mountPath: /run/kopano
+          name: kopanosocket
+      restartPolicy: Always
+      volumes:
+      - name: kopanossl
+        persistentVolumeClaim:
+          claimName: kopanossl
+      - name: kopanosocket
+        persistentVolumeClaim:
+          claimName: kopanosocket
+status: {}

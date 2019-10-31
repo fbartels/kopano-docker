@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kopano-meet
+  name: kopano-meet
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: kopano-meet
+    spec:
+      containers:
+      - env:
+        - name: KCCONF_MEET_disableFullGAB
+          value: "false"
+        - name: KCCONF_MEET_guests_enabled
+          value: "true"
+        - name: SERVICE_TO_START
+          value: meet
+        image: kopano/kopano_meet:latest
+        name: kopano-meet
+        resources: {}
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kopano-gateway
+  name: kopano-gateway
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: kopano-gateway
+    spec:
+      containers:
+      - env:
+        - name: KCCONF_GATEWAY_LOG_LEVEL
+          value: "3"
+        - name: KCCONF_GATEWAY_SERVER_SOCKET
+          value: http://kopano_server:236/
+        - name: SERVICE_TO_START
+          value: gateway
+        - name: TZ
+          value: Europe/Berlin
+        image: kopano/kopano_core:latest
+        name: kopano-gateway
+        ports:
+        - containerPort: 110
+        - containerPort: 143
+        resources: {}
+        volumeMounts:
+        - mountPath: /kopano/ssl
+          name: kopanossl
+        - mountPath: /run/kopano
+          name: kopanosocket
+      restartPolicy: Always
+      volumes:
+      - name: kopanossl
+        persistentVolumeClaim:
+          claimName: kopanossl
+      - name: kopanosocket
+        persistentVolumeClaim:
+          claimName: kopanosocket
+status: {}

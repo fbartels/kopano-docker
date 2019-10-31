@@ -1,0 +1,50 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kopano-kdav
+  name: kopano-kdav
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: kopano-kdav
+    spec:
+      containers:
+      - env:
+        - name: TZ
+          value: Europe/Berlin
+        image: kopano/kopano_kdav:latest
+        name: kopano-kdav
+        resources: {}
+        volumeMounts:
+        - mountPath: /kopano/ssl
+          name: kopanossl
+        - mountPath: /run/kopano
+          name: kopanosocket
+        - mountPath: /var/lib/kopano/kdav
+          name: kdavstates
+      hostname: kopano_kdav
+      restartPolicy: Always
+      volumes:
+      - name: kopanossl
+        persistentVolumeClaim:
+          claimName: kopanossl
+      - name: kopanosocket
+        persistentVolumeClaim:
+          claimName: kopanosocket
+      - name: kdavstates
+        persistentVolumeClaim:
+          claimName: kdavstates
+status: {}

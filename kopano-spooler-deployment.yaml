@@ -1,0 +1,54 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kopano-spooler
+  name: kopano-spooler
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: kopano-spooler
+    spec:
+      containers:
+      - env:
+        - name: KCCONF_SPOOLER_LOG_LEVEL
+          value: "3"
+        - name: KCCONF_SPOOLER_SMTP_SERVER
+          value: mail
+        - name: KCCONF_SPOOLER_SSLKEY_FILE
+          value: /kopano/ssl/kopano_spooler.pem
+        - name: SERVICE_TO_START
+          value: spooler
+        - name: TZ
+          value: Europe/Berlin
+        image: kopano/kopano_core:latest
+        name: kopano-spooler
+        resources: {}
+        volumeMounts:
+        - mountPath: /kopano/ssl
+          name: kopanossl
+        - mountPath: /run/kopano
+          name: kopanosocket
+      hostname: spooler
+      restartPolicy: Always
+      subdomain: kopano.demo
+      volumes:
+      - name: kopanossl
+        persistentVolumeClaim:
+          claimName: kopanossl
+      - name: kopanosocket
+        persistentVolumeClaim:
+          claimName: kopanosocket
+status: {}

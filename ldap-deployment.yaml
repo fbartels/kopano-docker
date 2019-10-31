@@ -1,0 +1,60 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: ldap
+  name: ldap
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: ldap
+    spec:
+      containers:
+      - args:
+        - --loglevel
+        - info
+        - --copy-service
+        env:
+        - name: LDAP_ADMIN_PASSWORD
+          value: FB816E984F6B05788B717135190CA327
+        - name: LDAP_BASE_DN
+          value: dc=kopano,dc=demo
+        - name: LDAP_DOMAIN
+          value: kopano.demo
+        - name: LDAP_ORGANISATION
+          value: '"Kopano Demo"'
+        - name: LDAP_READONLY_USER
+          value: "true"
+        - name: LDAP_READONLY_USER_PASSWORD
+          value: 228C67CCCA4654D2A6967ADE3F468FCE
+        image: kopano/kopano_ldap_demo:latest
+        name: kopano-ldap
+        ports:
+        - containerPort: 389
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/ldap/slapd.d
+          name: slapd
+        - mountPath: /var/lib/ldap
+          name: ldap
+      restartPolicy: Always
+      volumes:
+      - name: slapd
+        persistentVolumeClaim:
+          claimName: slapd
+      - name: ldap
+        persistentVolumeClaim:
+          claimName: ldap
+status: {}

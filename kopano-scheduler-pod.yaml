@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kopano-scheduler
+  name: kopano-scheduler
+spec:
+  containers:
+  - env:
+    - name: CRONDELAYED_KBACKUP
+      value: 30 1 * * * docker run --rm -it --volumes-from kopano_server -v /root/kopano-backup:/kopano/path
+        kopano/kopano_utils:latest kopano-backup -h
+    - name: CRONDELAYED_SOFTDELETE
+      value: 30 2 * * * docker exec kopano_server kopano-admin --purge-softdelete
+        30
+    - name: CRON_KOPANOUSERS
+      value: 10 * * * * docker exec kopano_server kopano-admin --sync
+    - name: CRON_KOPANOUSERS2
+      value: 10 * * * * docker exec kopano_server_2 kopano-admin --sync
+    - name: CRON_ZPUSHGAB
+      value: 0 22 * * * docker exec kopano_zpush z-push-gabsync -a sync
+    - name: TZ
+      value: Europe/Berlin
+    image: kopano/kopano_scheduler:latest
+    name: kopano-scheduler
+    resources: {}
+    volumeMounts:
+    - mountPath: /var/run/docker.sock
+      name: kopano-scheduler-claim0
+      readOnly: true
+  restartPolicy: Never
+  volumes:
+  - name: kopano-scheduler-claim0
+    persistentVolumeClaim:
+      claimName: kopano-scheduler-claim0
+      readOnly: true
+status: {}

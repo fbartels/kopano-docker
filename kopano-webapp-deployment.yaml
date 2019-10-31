@@ -1,0 +1,63 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kopano-webapp
+  name: kopano-webapp
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: kopano-webapp
+    spec:
+      containers:
+      - env:
+        - name: ADDITIONAL_KOPANO_WEBAPP_PLUGINS
+        - name: KCCONF_WEBAPP_CLIENT_TIMEOUT
+          value: "36000"
+        - name: KCCONF_WEBAPP_COOKIE_NAME
+          value: Test
+        - name: KCCONF_WEBAPP_ENABLE_SHARED_RULES
+          value: "true"
+        - name: KCCONF_WEBAPP_INSECURE_COOKIES
+          value: "true"
+        - name: KCCONF_WEBAPP_OIDC_CLIENT_ID
+          value: webapp
+        - name: KCCONF_WEBAPP_OIDC_ISS
+          value: https://kopano.demo:2015
+        - name: TZ
+          value: Europe/Berlin
+        image: kopano/kopano_webapp:latest
+        name: kopano-webapp
+        resources: {}
+        volumeMounts:
+        - mountPath: /kopano/ssl
+          name: kopanossl
+        - mountPath: /run/kopano
+          name: kopanosocket
+        - mountPath: /var/lib/kopano-webapp
+          name: kopanowebapp
+      hostname: kopano_webapp
+      restartPolicy: Always
+      volumes:
+      - name: kopanossl
+        persistentVolumeClaim:
+          claimName: kopanossl
+      - name: kopanosocket
+        persistentVolumeClaim:
+          claimName: kopanosocket
+      - name: kopanowebapp
+        persistentVolumeClaim:
+          claimName: kopanowebapp
+status: {}

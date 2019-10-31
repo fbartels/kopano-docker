@@ -1,0 +1,106 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kopano-server-2
+  name: kopano-server-2
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: kopano-server-2
+    spec:
+      containers:
+      - env:
+        - name: ADDITIONAL_KOPANO_PACKAGES
+          value: '""'
+        - name: KCCOMMENT_LDAP_1
+          value: '!include /usr/share/kopano/ldap.active-directory.cfg'
+        - name: KCCONF_ADMIN_SSLKEY_FILE
+          value: /kopano/ssl/admin.pem
+        - name: KCCONF_LDAP_LDAP_BIND_PASSWD
+          value: 228C67CCCA4654D2A6967ADE3F468FCE
+        - name: KCCONF_LDAP_LDAP_BIND_USER
+          value: cn=readonly,dc=kopano,dc=demo
+        - name: KCCONF_LDAP_LDAP_SEARCH_BASE
+          value: dc=kopano,dc=demo
+        - name: KCCONF_LDAP_LDAP_URI
+          value: ldap://ldap:389
+        - name: KCCONF_SERVER_COREDUMP_ENABLED
+          value: "no"
+        - name: KCCONF_SERVER_ENABLE_DISTRIBUTED_KOPANO
+          value: "true"
+        - name: KCCONF_SERVER_ENABLE_SSO
+          value: "yes"
+        - name: KCCONF_SERVER_HIDE_EVERYONE
+          value: "YES"
+        - name: KCCONF_SERVER_KCOIDC_INSECURE_SKIP_VERIFY
+          value: "yes"
+        - name: KCCONF_SERVER_KCOIDC_ISSUER_IDENTIFIER
+          value: https://kopano.demo:2015
+        - name: KCCONF_SERVER_LOG_LEVEL
+          value: "6"
+        - name: KCCONF_SERVER_MYSQL_DATABASE
+          value: kopano2
+        - name: KCCONF_SERVER_MYSQL_HOST
+          value: db
+        - name: KCCONF_SERVER_MYSQL_PASSWORD
+          value: 487971A7914C7A0D4E043A375A020F67
+        - name: KCCONF_SERVER_MYSQL_PORT
+          value: "3306"
+        - name: KCCONF_SERVER_MYSQL_USER
+          value: kopano
+        - name: KCCONF_SERVER_PROXY_HEADER
+          value: '*'
+        - name: KCCONF_SERVER_SERVER_NAME
+          value: kopano_server_2
+        - name: KCCONF_SERVER_SERVER_SSL_CA_FILE
+          value: /kopano/ssl/ca.pem
+        - name: KCCONF_SERVER_SERVER_SSL_KEY_FILE
+          value: /kopano/ssl/kopano_server_2.pem
+        - name: KCCONF_SERVER_SSLKEYS_PATH
+          value: /kopano/ssl/clients
+        - name: KCCONF_SERVER_SURVEYCLIENT_INTERVAL
+          value: "0"
+        - name: KCCONF_SERVER_SYSTEM_EMAIL_ADDRESS
+          value: postmaster@kopano.demo
+        - name: KCUNCOMMENT_LDAP_1
+          value: '!include /usr/share/kopano/ldap.openldap.cfg'
+        - name: SERVICE_TO_START
+          value: server
+        - name: TZ
+          value: Europe/Berlin
+        image: kopano/kopano_core:latest
+        name: kopano-server-2
+        resources: {}
+        volumeMounts:
+        - mountPath: /kopano/data
+          name: kopanodata2
+        - mountPath: /kopano/ssl
+          name: kopanossl
+        - mountPath: /run/kopano
+          name: kopanosocket2
+      hostname: kopano_server_2
+      restartPolicy: Always
+      volumes:
+      - name: kopanodata2
+        persistentVolumeClaim:
+          claimName: kopanodata2
+      - name: kopanossl
+        persistentVolumeClaim:
+          claimName: kopanossl
+      - name: kopanosocket2
+        persistentVolumeClaim:
+          claimName: kopanosocket2
+status: {}

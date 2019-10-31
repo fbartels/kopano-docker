@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f -
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kopano-kwmserver
+  name: kopano-kwmserver
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f -
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: kopano-kwmserver
+    spec:
+      containers:
+      - args:
+        - wrapper.sh
+        env:
+        - name: INSECURE
+          value: "yes"
+        - name: enable_guest_api
+          value: "yes"
+        - name: oidc_issuer_identifier
+          value: https://kopano.demo:2015
+        - name: public_guest_access_regexp
+          value: ^group/public/.*
+        - name: turn_service_credentials_password
+          value: 2YKMUASL5V
+        - name: turn_service_credentials_user
+          value: KST0084-5VV4X48LI
+        image: kopano/kopano_kwmserver:latest
+        name: kopano-kwmserver
+        resources: {}
+        volumeMounts:
+        - mountPath: /kopano/ssl
+          name: kopanossl
+      restartPolicy: Always
+      volumes:
+      - name: kopanossl
+        persistentVolumeClaim:
+          claimName: kopanossl
+status: {}
