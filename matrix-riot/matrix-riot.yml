@@ -1,0 +1,16 @@
+version: "3.5"
+
+services:
+  synapse:
+    container_name: "synapse"
+    image: "matrixdotorg/synapse:v1.11.1-py3"
+    #command: generate
+    restart: "unless-stopped"
+    ports:
+      - "127.0.0.1:18008:8008"
+      - "127.0.0.1:18448:8448"
+    environment:
+      - SYNAPSE_SERVER_NAME=my.matrix.host
+      - SYNAPSE_REPORT_STATS=yes 
+    volumes:
+      - "./data/:/data/"
