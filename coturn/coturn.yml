@@ -1,0 +1,15 @@
+version: "3.5"
+
+services:
+    coturn:
+        image: instrumentisto/coturn:4.5
+        command:
+          - --log-file=stdout
+          - --external-ip=$$(detect-external-ip)  # <- notice $$ to omit Docker Compose expansion
+          - --static-auth-secret=test
+          #- --Verbose
+        tmpfs:
+          - /var/lib/coturn
+        #volumes:
+          #- ./_dev/coturn/turnserver.conf:/etc/coturn/turnserver.conf:ro
+        network_mode: host
