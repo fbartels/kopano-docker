@@ -21,3 +21,5 @@ services:
 # this way the container is reachable via non-ssl 3478
 # TODO how to get ssl cert from the rest of the stack?
 # https://community.hetzner.com/tutorials/install-turn-stun-server-on-debian-ubuntu-with-coturn
+# docker-compose -f docker-compose.yml -f coturn/coturn.yml up -d coturn
+# docker-compose -f docker-compose.yml -f coturn/coturn.yml logs -f coturn
