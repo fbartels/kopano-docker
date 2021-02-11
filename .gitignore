@@ -5,6 +5,7 @@
 .vscode/settings.json
 *.env
 *.pem
+*.swp
 **/.vscode
 apt_auth.conf
 build.tags

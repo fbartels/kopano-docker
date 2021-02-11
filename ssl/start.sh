@@ -42,7 +42,7 @@ if [ ! -f $enckey ]; then
 	mv $enckey.tmp $enckey
 fi
 
-# Konnect - create token signing key if not already present 
+# Konnect - create token signing key if not already present
 signkey="/kopano/ssl/konnectd-tokens-signing-key.pem"
 if [ ! -L $signkey ] && [ ! -f $signkey ]; then
 	echo "Creating Konnect token signing key..."

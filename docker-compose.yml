@@ -332,6 +332,9 @@ services:
       - kopanossl/:/kopano/ssl
     environment:
       - KCCONF_GATEWAY_IMAP_LISTEN=0.0.0.0:143
+      - KCCONF_GATEWAY_IMAPS_LISTEN=0.0.0.0:993
+      - KCCONF_GATEWAY_SSL_PRIVATE_KEY_FILE=/kopano/ssl/server.key
+      - KCCONF_GATEWAY_SSL_CERTIFICATE_FILE=/kopano/ssl/bundle.crt
       - KCCONF_GATEWAY_LOG_LEVEL=3
       - KCCONF_GATEWAY_LOG_TIMESTAMP=0
       - KCCONF_GATEWAY_SERVER_SOCKET=http://kopano_server:236/
